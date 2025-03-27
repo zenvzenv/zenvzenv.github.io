@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>浅谈流水线(pipleline)模式 | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文基于 Java 本文基于 slot  流水线模式是我个人最喜欢的设计模式，它可以帮我把复杂问题简单化，让复杂的流程变得更清晰易懂。 在诸多的优秀的开源项目中都能看到它的身影(如：Netty,Kafka)，我觉得这个模式还是值得学习下的。 网上的 Pipeline 实现各异，这篇文章也只是我个人的一个实现思路，为各位读者抛砖引玉，拓展思路。 基本概念与实现Pipeline 有三个基本的概念，分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈流水线(pipleline)模式">
+<meta property="og:url" content="https://zenvzenv.github.io/2023/04/20/%E6%B5%85%E8%B0%88%E6%B5%81%E6%B0%B4%E7%BA%BF-pipleline-%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="本文基于 Java 本文基于 slot  流水线模式是我个人最喜欢的设计模式，它可以帮我把复杂问题简单化，让复杂的流程变得更清晰易懂。 在诸多的优秀的开源项目中都能看到它的身影(如：Netty,Kafka)，我觉得这个模式还是值得学习下的。 网上的 Pipeline 实现各异，这篇文章也只是我个人的一个实现思路，为各位读者抛砖引玉，拓展思路。 基本概念与实现Pipeline 有三个基本的概念，分">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2023-04-20T11:19:12.000Z">
+<meta property="article:modified_time" content="2023-04-28T11:19:12.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="设计模式">
+<meta property="article:tag" content="pipeline">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2023/04/20/%E6%B5%85%E8%B0%88%E6%B5%81%E6%B0%B4%E7%BA%BF-pipleline-%E6%A8%A1%E5%BC%8F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '浅谈流水线(pipleline)模式',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-28 19:19:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">浅谈流水线(pipleline)模式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-04-20T11:19:12.000Z" title="Created 2023-04-20 19:19:12">2023-04-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-28T11:19:12.000Z" title="Updated 2023-04-28 19:19:12">2023-04-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>8min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="浅谈流水线(pipleline)模式"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本文基于 Java</p>
+<p>本文基于 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a></p>
+</blockquote>
+<p>流水线模式是我个人最喜欢的设计模式，它可以帮我把复杂问题简单化，让复杂的流程变得更清晰易懂。</p>
+<p>在诸多的优秀的开源项目中都能看到它的身影(如：Netty,Kafka)，我觉得这个模式还是值得学习下的。</p>
+<p>网上的 <code>Pipeline</code> 实现各异，这篇文章也只是我个人的一个实现思路，为各位读者抛砖引玉，拓展思路。</p>
+<h2 id="基本概念与实现"><a href="#基本概念与实现" class="headerlink" title="基本概念与实现"></a>基本概念与实现</h2><p>Pipeline 有三个基本的概念，分别是：Pipeline,Valve,Context，他们的关系大致如下所示：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">+-------------------------------------------------------------------------------+</span><br><span class="line">|   Pipeline                                                                    |</span><br><span class="line">|    +-----------+     +-----------+      +-----------+        +-----------+    |</span><br><span class="line">|    |           |     |           |      |           |        |           |    |</span><br><span class="line">|    |   Valve1  +----^+   Valve2  +-----^+   Valve3  +--------&gt;   Valve4  |    |</span><br><span class="line">|    |           |     |           |      |           |        |           |    |</span><br><span class="line">|    +-----------+     +-----------+      +-----------+        +-----------+    |</span><br><span class="line">|                                  Context                                      |</span><br><span class="line">+-------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>一条Pipeline有一个Context，多个Valve。这些Valve是很小的、单元化的，一个Valve只做一件简单的事。前后Valve之间的通信由Context来承载。但 Context 并不是必须的，如果你的需求足够简单的话，那么可以去除 Context。</p>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><p>以我的理解，Pipeline 是存放 Valve 的容器，其实现为单向链表或双向链表，Pipeline 驱动整个业务流程的运行，什么时候终止、什么时候添加新 Valve 由 Pipeline 说了算。</p>
+<p>一般来说，Pipeline 作为一个 <code>interface</code> 存在的，其中定义了一些 Pipeline 的通用行为，具体的实现由各个业务逻辑去实现。一个典型的 Pipeline 接口声明如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Pipeline</span> &#123;</span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(PipelineConfig config)</span>;</span><br><span class="line">    <span class="comment">// 启动 Pipeline</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">start</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 获取 Pipeline 上下文</span></span><br><span class="line">    Context <span class="title function_">getContext</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但在 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 做了魔改，<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 的 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/Pipeline.java">Pipeline</a> 实现如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Pipeline</span>&lt;I&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 管道名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 管道中第一个处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Valve&lt;I, ?&gt; first;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 管道中最后一个处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Valve&lt;?, ?&gt; tail;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">PipelineContext</span> <span class="variable">context</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PipelineContext</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Pipeline</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在管道的最后添加一个处理节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> valve 处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addLast</span><span class="params">(Valve&lt;?, ?&gt; valve)</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> Valve&lt;?, ?&gt; t = <span class="built_in">this</span>.tail;</span><br><span class="line">        tail = valve;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">null</span> == t) &#123;</span><br><span class="line">            first = (Valve&lt;I, ?&gt;) valve;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            t.setNext(valve);</span><br><span class="line">            valve.setPrev(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没实现，发现没有用到😅</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">linkAfter</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 唤醒第一个 Valve</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">start</span><span class="params">(I input)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.first.bootstrap(input, <span class="built_in">this</span>.context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整个业务流程的 Valve 被当作双向链表管理起来，有序的从第一个 Valve 节点开始被执行到最后一个 Valve。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 中 分别有 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/valve/InitValve.java">InitValve</a>,<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/valve/BuildSlotClassValve.java">BuildSlotClassValve</a>,<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/valve/InstrumentationValve.java">InstrumentationValve</a> 和 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/valve/TransformClassValve.java">TransformClassValve</a>。</p>
+<p>执行关系为 InitValve -&gt; BuildSlotClassValve -&gt; TransformClassValve -&gt; InstrumentationValve，具体到代码层面 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/SlotAgentBootstrap.java">SlotAgentBootstrap</a> 如下所示：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String slotConfFilePath, Instrumentation inst)</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="type">Properties</span> <span class="variable">init</span> <span class="operator">=</span> init(slotConfFilePath);</span><br><span class="line">    AnsiLog.info(<span class="string">&quot;开始埋点...,埋点配置文件为 : &#123;&#125;&quot;</span>, slotConfFilePath);</span><br><span class="line">    <span class="keyword">final</span> Pipeline&lt;Properties&gt; pipeline = <span class="keyword">new</span> <span class="title class_">Pipeline</span>&lt;&gt;(<span class="string">&quot;slot&quot;</span>);</span><br><span class="line">    pipeline.addLast(<span class="keyword">new</span> <span class="title class_">InitValve</span>());</span><br><span class="line">    pipeline.addLast(<span class="keyword">new</span> <span class="title class_">BuildSlotClassValve</span>());</span><br><span class="line">    pipeline.addLast(<span class="keyword">new</span> <span class="title class_">TransformClassValve</span>());</span><br><span class="line">    pipeline.addLast(<span class="keyword">new</span> <span class="title class_">InstrumentationValve</span>(inst));</span><br><span class="line"></span><br><span class="line">    pipeline.start(init);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由链表组织所有的 Valve 是非常灵活的，我们可以在复杂的业务系统中动态的组装 Pipeline，实现复杂的业务逻辑。<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 的业务相对稳定，变化相对较小，所以直接在代码里写死，显式调用。</p>
+<p>我们也可以引入外部系统配置化，可以通过 json，xml 或数据库中的信息来描述各个 Valve 的依赖关系(当然这些 Valve 都是事先被实现好的)，类似 Tomcat 的 Pipeline 一样，json 大致如下所示：</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;scene_a&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;valves&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;checkOrder&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;checkPayment&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;checkDiscount&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;computeMount&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;payment&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;DeductInventory&quot;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;config&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;sendEmail&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;supportAlipay&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Valve"><a href="#Valve" class="headerlink" title="Valve"></a>Valve</h3><p>Valve 是 Pipeline 中最小的处理单元，所有的业务逻辑都将在 Valve 中被实现。<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 的 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/Valve.java">Valve</a> 实现如下所示：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Valve</span>&lt;I, O&gt; &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context 流水线上下文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(PipelineContext context)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理业务逻辑</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> input   输入的数据类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context 管道上线文</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 输出</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    O <span class="title function_">process</span><span class="params">(I input, PipelineContext context)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取下一个节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 下一个处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Valve&lt;?, ?&gt; getNext();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置下一个处理节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> next 下一个处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setNext</span><span class="params">(Valve&lt;?, ?&gt; next)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置上一个处理节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> prev 上一个梳理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setPrev</span><span class="params">(Valve&lt;?, ?&gt; prev)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取上一个处理节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 处理节点</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Valve&lt;?, ?&gt; getPrev();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 唤起执行节点</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> input   输出</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> context 流水线上下文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">bootstrap</span><span class="params">(I input, PipelineContext context)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span>;</span><br><span class="line"></span><br><span class="line">    String <span class="title function_">getName</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不难看出，一个 Valve 有输入和输出，例如：BValve 依赖 AValve，那么 AValve 的输出就是 BValve 的输入，这样就可以将整个业务流程给串联起来。</p>
+<h3 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h3><p>存放了整个 Pipeline 的必要的运行信息，类似于缓存一样的存在，Pipeline 中的任何 Valve 都可以向其中存放和读取数据。Context 没有特定的实现方式，可以按照自己的喜好去实现。在 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 中 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/pipeline/PipelineContext.java">PipelineContext</a> 使用 <code>LRU</code> 来实现，具体如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PipelineContext</span> &#123;</span><br><span class="line">    <span class="comment">// LRU</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;String, Object&gt; CACHE = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;&gt;(<span class="number">16</span>, <span class="number">0.75F</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">cache</span><span class="params">(String key, Object value)</span> &#123;</span><br><span class="line">        CACHE.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> Object <span class="title function_">getByKey</span><span class="params">(String key)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> CACHE.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p>我们在某个Valve，可能会需要根据不同的业务线，有不同的逻辑。比如同一个文本，有些是发邮件，有些是发短信，有些是发钉钉。那这个时候就可以在配置里面写上当前这个业务线要发送的渠道，然后在Valve里面通过策略模式去决定使用什么渠道发送，这样就不用在Valve里面写死很多if-else，以后很好扩展。</p>
+<h3 id="并行执行、"><a href="#并行执行、" class="headerlink" title="并行执行、"></a>并行执行、</h3><p>我们在前面看到Valve都是链式一个一个执行的。但有时候可能多个Valve彼此之间并不依赖，可以同时并行地去跑。比如发消息，可能多个Valve并行地去发。</p>
+<p>这个时候我们可以把Pipeline改造一下，就像Jenkins设计Pipeline那样，把一个完整的Pipeline分成Phase、Stage、Step等，我们可以对某个Phase或者某个Step设置成可以并行执行的。这需要另外写一个并行执行的Pipeline，用CountDownLatch等工具来等待所有Valve执行完，往下走。</p>
+<h3 id="使用-ThreadLocal"><a href="#使用-ThreadLocal" class="headerlink" title="使用 ThreadLocal"></a>使用 ThreadLocal</h3><p>理论上来说，我们在任何地方，都应该使用Context来在整个Pipeline中传递数据。但Context有时候使用起来相对比较麻烦。比如我们在Valve内部抽私有方法的时候，可能要经常把Context作为方法参数传进去，用起来并不是特别方便。而Valve应该是无状态的，不适合把Context放在Valve里面作为属性。</p>
+<p>这个时候我们可以借助ThreadLocal来代替Context的作用，Valve通过使用ThreadLocal来存取数据。但使用ThreadLocal有三个需要注意的点。</p>
+<p>如果你的Pipeline是要支持并行的，在并行Valve里面就不适合使用ThreadLocal。</p>
+<p>使用ThreadLocal要记得在最后阶段Clear，避免影响当前线程下次执行Pipeline。</p>
+<p>不要把零散的一个个属性放进ThreadLocal，因为同一种类型，一个线程只能在一个ThreadLocal里面放一个值。而我们的上下文可能会有多个String、boolean等值。如果使用ThreadLocal，可以把所有属性都包成一个Context类，放进ThreadLocal。</p>
+<h3 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h3><p>虽然我们说一个Valve只做一件简单的事。但这是相对于整个流程来说的。有时候太过细化也不好，不方便管理。正确的做法应该是做好抽象和分组。比如我们会有一个“校验”阶段，就不用把具体每个字段的校验都单独抽成Valve放进主流程。我们可以就在主流程放一个“校验”的Valve，然后在这个“校验”的Valve里面专门生成一条“校验Pipeline”。这样主流程也比较清晰明了，每个Valve的职责也比较清晰。</p>
+<blockquote>
+<p>注意，子Pipeline应该有它单独的Context，但是它同时也应该具有主Pipeline的Context，是不是应该通过继承来实现?</p>
+</blockquote>
+<h3 id="工厂方法模板"><a href="#工厂方法模板" class="headerlink" title="工厂方法模板"></a>工厂方法模板</h3><p>Pipeline的优势在于通过配置化来灵活地实现不同的业务走不同的流程。实现统一化和差异化的完美结合。我们通过读取配置，生成一条Pipeline的时候，用工厂模式来实现比较好。<br>先读取当前的业务线，然后通过这个业务线和配置，完成整条Pipeline的实例化和装配，可以通过调用一个Pipeline Factory来实现。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Pipeline</span> <span class="variable">pipeline</span> <span class="operator">=</span> PipelineFactory.create(pipelineConfig);</span><br><span class="line">pipeline.start();</span><br></pre></td></tr></table></figure>
+
+<h3 id="树与图"><a href="#树与图" class="headerlink" title="树与图"></a>树与图</h3><p>上面我们介绍的Pipeline，本质上是一个链。但如果往更通用（同时也更复杂）的方向去设计，它还可以做成一个图或者树。</p>
+<p>假设我们在某个环节有一个条件分支，通过当时的context里面的数据状态，来判断下一步要走哪个Valve，形成一个树。最后可能又归拢到一个Valve，那就形成了一个图。</p>
+<p>树和图会显著增加Pipeline的复杂度，需要配合上可视化配置，才能发挥出它的威力，但成本相对较高，除非真的业务非常多且复杂，不然不是很推荐。</p>
+<p>树和图的Pipeline也需要结合数据结构专门设计Pipeline，节点如何往下走。</p>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>Pipeline设计模式很强大，但它也有很明显的缺点。</p>
+<ul>
+<li><p>第一个缺点是可读性不强。因为它是可配置化的，且配置经常在外部（比如数据库里的一个JSON）。所以可读性不好。尤其是我们在读 Valve 代码的时候，「<strong>如果不对照配置，其实是不知道它的前后调用关系的</strong>」。</p>
+</li>
+<li><p>第二个缺点是Pipeline之间传递数据是通过Context，而不是简单的函数调用。所以一条Pipeline是有状态的，而且「<strong>方法调用内部修改Context</strong>」，而不是通过返回值，是有副作用的。</p>
+</li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>Pipeline的本质是「<strong>数据结构和设计模式的灵活应用</strong>」，来应对流程复杂多变的业务场景。它并不是一个新的东西，也不是一个固定的设计模式，而应该是一种灵活的设计思想。</p>
+<p>当然了，它也不是银弹，不能解决所有问题。还是要「<strong>合适</strong>」才行。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2023/04/20/%E6%B5%85%E8%B0%88%E6%B5%81%E6%B0%B4%E7%BA%BF-pipleline-%E6%A8%A1%E5%BC%8F/">https://zenvzenv.github.io/2023/04/20/%E6%B5%85%E8%B0%88%E6%B5%81%E6%B0%B4%E7%BA%BF-pipleline-%E6%A8%A1%E5%BC%8F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><a class="post-meta__tags" href="/tags/pipeline/">pipeline</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/04/CentOS7-X86-64-%E7%BC%96%E8%AF%91-ClickHouse-%E8%AE%B0%E5%BD%95/" title="CentOS7(X86_64) 编译 ClickHouse 记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">CentOS7(X86_64) 编译 ClickHouse 记录</div></div></a></div><div class="next-post pull-right"><a href="/2023/04/11/WiFi%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3%E6%95%99%E7%A8%8B/" title="WiFi密码破解教程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">WiFi密码破解教程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">基本概念与实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pipeline"><span class="toc-number">1.1.</span> <span class="toc-text">Pipeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Valve"><span class="toc-number">1.2.</span> <span class="toc-text">Valve</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Context"><span class="toc-number">1.3.</span> <span class="toc-text">Context</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%93%E5%B1%95"><span class="toc-number">2.</span> <span class="toc-text">拓展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C%E3%80%81"><span class="toc-number">2.2.</span> <span class="toc-text">并行执行、</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-ThreadLocal"><span class="toc-number">2.3.</span> <span class="toc-text">使用 ThreadLocal</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88"><span class="toc-number">2.4.</span> <span class="toc-text">组合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E6%9D%BF"><span class="toc-number">2.5.</span> <span class="toc-text">工厂方法模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E4%B8%8E%E5%9B%BE"><span class="toc-number">2.6.</span> <span class="toc-text">树与图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">4.</span> <span class="toc-text">适用场景</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/" title="【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置">【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置</a><time datetime="2025-02-08T06:00:56.000Z" title="Created 2025-02-08 14:00:56">2025-02-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/03/%E4%BB%8E-RPM-%E4%B8%AD%E5%8F%8D%E5%90%91%E6%8F%90%E5%8F%96-SPEC-%E6%96%87%E4%BB%B6/" title="从 RPM 中反向提取 SPEC 文件">从 RPM 中反向提取 SPEC 文件</a><time datetime="2023-11-03T01:41:08.000Z" title="Created 2023-11-03 09:41:08">2023-11-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/05/10/CentOS7-ARM64-%E7%BC%96%E8%AF%91-Clickhouse-%E8%AE%B0%E5%BD%95/" title="CentOS7(ARM64) 编译 Clickhouse 记录">CentOS7(ARM64) 编译 Clickhouse 记录</a><time datetime="2023-05-10T16:00:00.000Z" title="Created 2023-05-11 00:00:00">2023-05-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
