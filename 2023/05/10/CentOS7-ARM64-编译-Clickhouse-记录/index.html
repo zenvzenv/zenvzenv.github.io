@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>CentOS7(ARM64) 编译 Clickhouse 记录 | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本文基于 CentOS7 (3.10.0-693.el7.x86_64 GNU&#x2F;Linux) 本文基于 ClickHouse-v23.3.2.37-lts  准备工作 需要 cmake 3.20 or newer 需要 clang 15.0 or newer 需要 lld 15 or newer 需要 Ninja 需要 Yasm 需要 Gawk 需要 arm 交叉编译环境  安装必要工">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7(ARM64) 编译 Clickhouse 记录">
+<meta property="og:url" content="https://zenvzenv.github.io/2023/05/10/CentOS7-ARM64-%E7%BC%96%E8%AF%91-Clickhouse-%E8%AE%B0%E5%BD%95/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="本文基于 CentOS7 (3.10.0-693.el7.x86_64 GNU&#x2F;Linux) 本文基于 ClickHouse-v23.3.2.37-lts  准备工作 需要 cmake 3.20 or newer 需要 clang 15.0 or newer 需要 lld 15 or newer 需要 Ninja 需要 Yasm 需要 Gawk 需要 arm 交叉编译环境  安装必要工">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2023-05-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-16T16:00:00.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="记录">
+<meta property="article:tag" content="Clickhouse">
+<meta property="article:tag" content="编译">
+<meta property="article:tag" content="x86_arm_corss">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2023/05/10/CentOS7-ARM64-%E7%BC%96%E8%AF%91-Clickhouse-%E8%AE%B0%E5%BD%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CentOS7(ARM64) 编译 Clickhouse 记录',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-17 00:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CentOS7(ARM64) 编译 Clickhouse 记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-05-10T16:00:00.000Z" title="Created 2023-05-11 00:00:00">2023-05-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-05-16T16:00:00.000Z" title="Updated 2023-05-17 00:00:00">2023-05-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">966</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>5min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CentOS7(ARM64) 编译 Clickhouse 记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本文基于 CentOS7 (3.10.0-693.el7.x86_64 GNU&#x2F;Linux)</p>
+<p>本文基于 ClickHouse-v23.3.2.37-lts</p>
+</blockquote>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ul>
+<li>需要 cmake 3.20 or newer</li>
+<li>需要 clang 15.0 or newer</li>
+<li>需要 lld 15 or newer</li>
+<li>需要 Ninja</li>
+<li>需要 Yasm</li>
+<li>需要 Gawk</li>
+<li>需要 arm 交叉编译环境</li>
+</ul>
+<h3 id="安装必要工具"><a href="#安装必要工具" class="headerlink" title="安装必要工具"></a>安装必要工具</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">add extra repos</span></span><br><span class="line">yum -y install epel-release centos-release-scl centos-release-scl-rh</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">installing needed libs</span></span><br><span class="line">yum -y install readline-devel unixODBC-devel openssl-devel libicu-devel libtool-ltdl-devel openssl-devel scl-utils</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">installing build tools</span></span><br><span class="line">yum -y install git devtoolset-9 tar wget rh-python36</span><br><span class="line">yum -y install http://repo.okay.com.mx/centos/7/x86_64/release/okay-release-1-5.el7.noarch.rpm</span><br><span class="line">yum -y install ninja-build yasm gawk</span><br><span class="line">yum -y update binutils</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-cmake"><a href="#安装-cmake" class="headerlink" title="安装 cmake"></a>安装 cmake</h2><p>安装步骤如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /opt</span><br><span class="line">wget https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-linux-x86_64.tar.gz</span><br><span class="line">tar xzf cmake-3.26.3-linux-x86_64.tar.gz</span><br><span class="line">ln -svf /opt/cmake-3.26.3-linux-x86_64/bin/* /usr/bin/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看版本，验证是否安装成功</span></span><br><span class="line">cmake --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-clang-与-lld"><a href="#安装-clang-与-lld" class="headerlink" title="安装 clang 与 lld"></a>安装 clang 与 lld</h2><p>先下载好安装包</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">你想要安装的目录</span></span><br><span class="line">export basedir=/opt</span><br><span class="line"></span><br><span class="line">cd &quot;$basedir&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此部分最好科学上网，否则速度感人</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git config --global http.proxy socks5://127.0.0.1:7890</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git config --global https.proxy socks5://127.0.0.1:7890</span></span><br><span class="line">git clone https://github.com/llvm/llvm-project.git</span><br><span class="line">git tag</span><br><span class="line">git checkout -b remotes/origin/release/16.x</span><br><span class="line">git checkout llvmorg-16.0.3</span><br></pre></td></tr></table></figure>
+
+<p>执行编译安装 clang 与 lld 步骤</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export basedir=/opt</span><br><span class="line">cd &quot;$basedir&quot;</span><br><span class="line"></span><br><span class="line">export THREADS=$(grep -c ^processor /proc/cpuinfo)</span><br><span class="line">mkdir $basedir/clang-build-16.0.3 &amp;&amp; cd $basedir/clang-build-16.0.3</span><br><span class="line">scl enable devtoolset-9 rh-python36 &#x27;cmake -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS=&quot;clang;lld&quot; -G Ninja ../llvm-project/llvm&#x27;</span><br><span class="line">ninja -j $THREADS &amp;&amp; ninja install</span><br></pre></td></tr></table></figure>
+
+<p>此过程会耗费大量时间，请耐心等待。</p>
+<h2 id="编译-Clickhouse"><a href="#编译-Clickhouse" class="headerlink" title="编译 Clickhouse"></a>编译 Clickhouse</h2><p>下载 ClickHouse 源码：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /opt</span><br><span class="line">git clone https://github.com/ClickHouse/ClickHouse.git</span><br></pre></td></tr></table></figure>
+
+<p>安装交叉编译环，前往 <a target="_blank" rel="noopener" href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">arm developer 官网</a> 下载交叉编译的环境。下载名为 <code>x86_64 Linux hosted cross toolchains</code> 的资源包。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /opt</span><br><span class="line">wget https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz?rev=6750d007ffbf4134b30ea58ea5bf5223&amp;hash=0F1CE8273B8A30129CA04BD61FFB547D</span><br><span class="line">mkdir -p /opt/ClickHouse/build-aarch64/cmake/toolchain/linux-aarch64</span><br><span class="line">tar xJf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-linux-gnu.tar.xz -C /opt/ClickHouse/build-aarch64/cmake/toolchain/linux-aarch64/ --strip-components=1</span><br></pre></td></tr></table></figure>
+
+<p>开始编译操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export codedir=/opt/ClickHouse</span><br><span class="line">cd $codedir</span><br><span class="line">git tag</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">好像切换了分支没生效，编译的版本为23.3.2.1</span></span><br><span class="line">git checkout -b v23.3.2.37-lts</span><br><span class="line">git submodule sync</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">此部分最好科学上网，否则速度感人</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git config --global http.proxy socks5://127.0.0.1:7890</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git config --global https.proxy socks5://127.0.0.1:7890</span></span><br><span class="line">git submodule update --init --recursive</span><br><span class="line"></span><br><span class="line">mkdir build-arm64</span><br><span class="line"></span><br><span class="line">scl enable devtoolset-9 rh-python36 &#x27;CC=/usr/local/bin/clang CXX=/usr/local/bin/clang++ cmake . -Bbuild-arm64 -DCOMPILER_CACHE=disabled -DCMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/ninja -DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">THREADS根据CPU个数自行进行设置</span></span><br><span class="line">export THREADS=$(grep -c ^processor /proc/cpuinfo)</span><br><span class="line">ninja -j $THREADS clickhouse -C build-arm64</span><br></pre></td></tr></table></figure>
+
+<p>其中 CC 为 clang 的安装目录，CXX 为 clang++ 的安装目录，需要根据自己的实际情况进行替换。</p>
+<p>此过程需要较长时间，请耐心等待。</p>
+<p>编译完毕之后，可执行文件将会生成 <code>/opt/ClickHouse/build-arm64/programs/clickhouse</code> 可执行的二进制文件。可以执行如下命令来查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./clickhouse</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Use one of the following commands:</span><br><span class="line">clickhouse local [args]</span><br><span class="line">clickhouse client [args]</span><br><span class="line">clickhouse benchmark [args]</span><br><span class="line">clickhouse server [args]</span><br><span class="line">clickhouse extract-from-config [args]</span><br><span class="line">clickhouse compressor [args]</span><br><span class="line">clickhouse format [args]</span><br><span class="line">clickhouse copier [args]</span><br><span class="line">clickhouse obfuscator [args]</span><br><span class="line">clickhouse git-import [args]</span><br><span class="line">clickhouse keeper [args]</span><br><span class="line">clickhouse keeper-converter [args]</span><br><span class="line">clickhouse install [args]</span><br><span class="line">clickhouse start [args]</span><br><span class="line">clickhouse stop [args]</span><br><span class="line">clickhouse status [args]</span><br><span class="line">clickhouse restart [args]</span><br><span class="line">clickhouse static-files-disk-uploader [args]</span><br><span class="line">clickhouse su [args]</span><br><span class="line">clickhouse hash-binary [args]</span><br><span class="line">clickhouse disks [args]</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动-server"><a href="#启动-server" class="headerlink" title="启动 server"></a>启动 server</h3><p>使用 <code>./clickhouse server</code> 来启动服务</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Processing configuration file &#x27;config.xml&#x27;.</span><br><span class="line">There is no file &#x27;config.xml&#x27;, will use embedded config.</span><br><span class="line">2023.05.10 15:30:34.434959 [ 4253 ] &#123;&#125; &lt;Information&gt; SentryWriter: Sending crash reports is disabled</span><br><span class="line">2023.05.10 15:30:34.446996 [ 4253 ] &#123;&#125; &lt;Trace&gt; Pipe: Pipe capacity is 1.00 MiB</span><br><span class="line">2023.05.10 15:30:34.813067 [ 4253 ] &#123;&#125; &lt;Information&gt; Application: Starting ClickHouse 23.3.2.1 (revision: 54472, git hash: 1b144bcd101ddf23466ba67e4fa0fd27afb9c060, build id: &lt;unknown&gt;), PID 4253</span><br><span class="line">2023.05.10 15:30:34.813124 [ 4253 ] &#123;&#125; &lt;Information&gt; Application: starting up</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动-client"><a href="#启动-client" class="headerlink" title="启动 client"></a>启动 client</h3><p>使用 <code>./clickhouse client</code> 来连接 server</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">ClickHouse client version 23.3.2.1.</span><br><span class="line">Connecting to localhost:9000 as user default.</span><br><span class="line">Connected to ClickHouse server version 23.3.2 revision 54462.</span><br><span class="line"></span><br><span class="line">Warnings:</span><br><span class="line"> * Linux transparent hugepages are set to &quot;always&quot;. Check /sys/kernel/mm/transparent_hugepage/enabled</span><br><span class="line"></span><br><span class="line">localhost :)</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2023/05/10/CentOS7-ARM64-%E7%BC%96%E8%AF%91-Clickhouse-%E8%AE%B0%E5%BD%95/">https://zenvzenv.github.io/2023/05/10/CentOS7-ARM64-%E7%BC%96%E8%AF%91-Clickhouse-%E8%AE%B0%E5%BD%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%B0%E5%BD%95/">记录</a><a class="post-meta__tags" href="/tags/Clickhouse/">Clickhouse</a><a class="post-meta__tags" href="/tags/%E7%BC%96%E8%AF%91/">编译</a><a class="post-meta__tags" href="/tags/x86-arm-corss/">x86_arm_corss</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/11/03/%E4%BB%8E-RPM-%E4%B8%AD%E5%8F%8D%E5%90%91%E6%8F%90%E5%8F%96-SPEC-%E6%96%87%E4%BB%B6/" title="从 RPM 中反向提取 SPEC 文件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">从 RPM 中反向提取 SPEC 文件</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/04/CentOS7-X86-64-%E7%BC%96%E8%AF%91-ClickHouse-%E8%AE%B0%E5%BD%95/" title="CentOS7(X86_64) 编译 ClickHouse 记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">CentOS7(X86_64) 编译 ClickHouse 记录</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/05/04/CentOS7-X86-64-%E7%BC%96%E8%AF%91-ClickHouse-%E8%AE%B0%E5%BD%95/" title="CentOS7(X86_64) 编译 ClickHouse 记录"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-04</div><div class="title">CentOS7(X86_64) 编译 ClickHouse 记录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%BF%85%E8%A6%81%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.</span> <span class="toc-text">安装必要工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-cmake"><span class="toc-number">2.</span> <span class="toc-text">安装 cmake</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-clang-%E4%B8%8E-lld"><span class="toc-number">3.</span> <span class="toc-text">安装 clang 与 lld</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91-Clickhouse"><span class="toc-number">4.</span> <span class="toc-text">编译 Clickhouse</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-server"><span class="toc-number">4.1.</span> <span class="toc-text">启动 server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-client"><span class="toc-number">4.2.</span> <span class="toc-text">启动 client</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕">【macOS】如何在macOS上使用whisper来为视频添加字幕</a><time datetime="2025-04-22T14:47:15.000Z" title="Created 2025-04-22 22:47:15">2025-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/13/%E3%80%90macOS%E3%80%91macOS%E4%B8%8A%E9%80%9A%E8%BF%87UTM%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEmacOS%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="【macOS】macOS上通过UTM安装并配置macOS虚拟机">【macOS】macOS上通过UTM安装并配置macOS虚拟机</a><time datetime="2025-04-13T02:50:00.000Z" title="Created 2025-04-13 10:50:00">2025-04-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</a><time datetime="2025-04-05T05:53:15.000Z" title="Created 2025-04-05 13:53:15">2025-04-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Java 无痕埋点实现思路分享-javaagent篇 | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Java javaagent 无痕埋点思路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 无痕埋点实现思路分享-javaagent篇">
+<meta property="og:url" content="https://zenvzenv.github.io/2023/03/22/Java-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%88%86%E4%BA%AB-javaagent%E7%AF%87/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="Java javaagent 无痕埋点思路">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2023-03-22T01:17:51.000Z">
+<meta property="article:modified_time" content="2023-03-22T01:17:51.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="埋点">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="javaagent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2023/03/22/Java-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%88%86%E4%BA%AB-javaagent%E7%AF%87/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java 无痕埋点实现思路分享-javaagent篇',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-22 09:17:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Java 无痕埋点实现思路分享-javaagent篇</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-03-22T01:17:51.000Z" title="Created 2023-03-22 09:17:51">2023-03-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-03-22T01:17:51.000Z" title="Updated 2023-03-22 09:17:51">2023-03-22</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>13min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Java 无痕埋点实现思路分享-javaagent篇"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>本篇文章基于我的开源 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot">slot</a> 工程。<br>本文基于 jdk8 编写</p>
+</blockquote>
+<h2 id="埋点系统对比"><a href="#埋点系统对比" class="headerlink" title="埋点系统对比"></a>埋点系统对比</h2><p>一般的，埋点系统可分为两大类：侵入式埋点和无侵入式埋点。</p>
+<h3 id="侵入式埋点"><a href="#侵入式埋点" class="headerlink" title="侵入式埋点"></a>侵入式埋点</h3><p>一般通过 SDK 来提供埋点能力。</p>
+<h4 id="侵入式埋点优点"><a href="#侵入式埋点优点" class="headerlink" title="侵入式埋点优点"></a>侵入式埋点优点</h4><ol>
+<li><p>埋点粒度可以随意控制，想在哪埋点就在哪埋点</p>
+</li>
+<li><p>使用简单，开发人员根据需要在指定的业务代码处调用 API 即可</p>
+</li>
+</ol>
+<h4 id="侵入式埋点缺点"><a href="#侵入式埋点缺点" class="headerlink" title="侵入式埋点缺点"></a>侵入式埋点缺点</h4><ol>
+<li><p>需要对业务代码进行改造，可能会需要重新进行回归测试和重新发版</p>
+</li>
+<li><p>对业务人员不友好，所有的埋点操作都需要通过研发人员进行操作，对于业务的响应有滞后</p>
+</li>
+</ol>
+<h3 id="无侵入埋点"><a href="#无侵入埋点" class="headerlink" title="无侵入埋点"></a>无侵入埋点</h3><p>一般通过 agent 来实现。</p>
+<h4 id="无侵入埋点优点"><a href="#无侵入埋点优点" class="headerlink" title="无侵入埋点优点"></a>无侵入埋点优点</h4><ol>
+<li><p>无需对原有的业务代码进行改造</p>
+</li>
+<li><p>对业务人员较友好，业务人员可以配置需要埋点的内容</p>
+</li>
+</ol>
+<h4 id="无侵入埋点缺点"><a href="#无侵入埋点缺点" class="headerlink" title="无侵入埋点缺点"></a>无侵入埋点缺点</h4><ol>
+<li><p>埋点粒度无法控制，只能依托于埋点 agent 的实现粒度。</p>
+</li>
+<li><p>埋点的时效性只能依托于埋点 agent 实现，如果是通过 javaagent 来实现，那么需要重启应用来刷新埋点配置，如果是 attach 来实现则无需重启应用。</p>
+</li>
+</ol>
+<h2 id="javaagent"><a href="#javaagent" class="headerlink" title="javaagent"></a>javaagent</h2><blockquote>
+<p>在这片文章中对于 javaagent 只做简单介绍，无痕埋点的思路是本篇文章的重点。</p>
+<p>如果读者想深入了解 javaagent 可自行搜索相关资料。</p>
+</blockquote>
+<p>jvm 允许我们通过 javaagent 在程序启动的过程中对加载的 class 进行修改，这给我们的无痕埋点提供了入口，javaagent是<strong>slot 实现无痕埋点的基石</strong>。</p>
+<p>javaagent 主要包含三个部分，分别是：</p>
+<ul>
+<li>Manifest</li>
+<li>Agent Class</li>
+<li>ClassFileTransformer</li>
+</ul>
+<h3 id="Manifest"><a href="#Manifest" class="headerlink" title="Manifest"></a>Manifest</h3><p>jvm 要求 javaagent 的 jar 包中必须含有 Manifest 说明文件。</p>
+<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><p>我们将 Manifest 定义的属性分成了三组：基础、能力和特殊情况。</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">                                       ┌─── Premain-Class</span><br><span class="line">                       ┌─── Basic ─────┤</span><br><span class="line">                       │               └─── Agent-Class</span><br><span class="line">                       │</span><br><span class="line">                       │               ┌─── Can-Redefine-Classes</span><br><span class="line">                       │               │</span><br><span class="line">Manifest Attributes ───┼─── Ability ───┼─── Can-Retransform-Classes</span><br><span class="line">                       │               │</span><br><span class="line">                       │               └─── Can-Set-Native-Method-Prefix</span><br><span class="line">                       │</span><br><span class="line">                       │               ┌─── Boot-Class-Path</span><br><span class="line">                       └─── Special ───┤</span><br><span class="line">                                       └─── Launcher-Agent-Class</span><br></pre></td></tr></table></figure>
+
+<p>主要参数说明：</p>
+<ul>
+<li><code>Premain-Class</code>: When an agent is specified at JVM launch time this attribute specifies the agent class. That is, the class containing the premain method. When an agent is specified at JVM launch time this attribute is required. If the attribute is not present the JVM will abort. Note: this is a class name, not a file name or path.</li>
+<li><code>Agent-Class</code>: If an implementation supports a mechanism to start agents sometime after the VM has started then this attribute specifies the agent class. That is, the class containing the agentmain method. This attribute is required, if it is not present the agent will not be started. Note: this is a class name, not a file name or path.</li>
+<li><code>Can-Redefine-Classes</code>: <code>Boolean</code> (<code>true</code> or <code>false</code>, case irrelevant). Is the ability to redefine classes needed by this agent. Values other than true are considered false. This attribute is optional, the default is false.</li>
+<li><code>Can-Retransform-Classes</code>: <code>Boolean</code> (<code>true</code> or <code>false</code>, case irrelevant). Is the ability to retransform classes needed by this agent. Values other than <code>true</code> are considered <code>false</code>. This attribute is optional, the default is <code>false</code>.</li>
+<li><code>Can-Set-Native-Method-Prefix</code>: <code>Boolean</code> (<code>true</code> or <code>false</code>, case irrelevant). Is the ability to set native method prefix needed by this agent. Values other than <code>true</code> are considered <code>false</code>. This attribute is optional, the default is <code>false</code>.</li>
+<li><code>Boot-Class-Path</code>: A list of paths to be searched by the bootstrap class loader. Paths represent directories or libraries (commonly referred to as JAR or zip libraries on many platforms). These paths are searched by the bootstrap class loader after the platform specific mechanisms of locating a class have failed. Paths are searched in the order listed. Paths in the list are separated by one or more spaces. A path takes the syntax of the path component of a hierarchical URI. The path is absolute if it begins with a slash character (<code>/</code>), otherwise it is relative. A relative path is resolved against the absolute path of the agent JAR file. Malformed and non-existent paths are ignored. When an agent is started sometime after the VM has started then paths that do not represent a JAR file are ignored. This attribute is optional.</li>
+<li><code>Launcher-Agent-Class</code>: If an implementation supports a mechanism to start an application as an executable JAR then the main manifest may include this attribute to specify the class name of an agent to start before the application <code>main</code> method is invoked.</li>
+<li><strong>此文件最后必须要有行样换行</strong></li>
+</ul>
+<p><code>slot</code> 工程的 Manifest 文件如下所示：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Manifest-Version: 1.0</span><br><span class="line">Premain-Class: zenv.slot.SlotAgentBootstrap</span><br><span class="line">Power-By: zhengwei AKA zenv</span><br><span class="line">Can-Redefine-Classes: true</span><br><span class="line">Can-Retransform-Classes: true</span><br><span class="line">Class-Path: conf/ lib/slot-repackage-disruptor-1.0.jar lib/slot-repack</span><br><span class="line"> age-logger-1.0.jar</span><br><span class="line">Build-Jdk-Spec: 1.8</span><br><span class="line">Created-By: Maven Jar Plugin 3.2.0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="如何生成"><a href="#如何生成" class="headerlink" title="如何生成"></a>如何生成</h3><h4 id="maven-插件"><a href="#maven-插件" class="headerlink" title="maven 插件"></a>maven 插件</h4><p>可以通过 <code>maven-jar-plugin</code> 插件来帮助我们生成 Manifest 文件，相关配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">excludes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclude</span>&gt;</span>resources/**<span class="tag">&lt;/<span class="name">exclude</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">excludes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">addClasspath</span>&gt;</span>true<span class="tag">&lt;/<span class="name">addClasspath</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">classpathPrefix</span>&gt;</span>lib/<span class="tag">&lt;/<span class="name">classpathPrefix</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Power-By</span>&gt;</span>zhengwei AKA zenv<span class="tag">&lt;/<span class="name">Power-By</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Manifest-Version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">Manifest-Version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>zenv.slot.SlotAgentBootstrap<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Can-Redefine-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Redefine-Classes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">Class-Path</span>&gt;</span>conf/<span class="tag">&lt;/<span class="name">Class-Path</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>manifestEntries</code> 块就是 Manifest 的内容。在 maven 构建 jar 包的时候就会自动生成 Manifest 文件。</p>
+<h4 id="自己创建"><a href="#自己创建" class="headerlink" title="自己创建"></a>自己创建</h4><p>可以在 resource 文件夹下手动创建一个名为 <code>MANIFEST.MF</code> 的文件，<strong>文件的最后一行必须为空行</strong>，内容形如：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Manifest-Version: 1.0</span><br><span class="line">Can-Redefine-Classes: true</span><br><span class="line">Can-Retransform-Classes: true</span><br><span class="line">Premain-Class: &lt;your_agent_class&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Agent-Class"><a href="#Agent-Class" class="headerlink" title="Agent Class"></a>Agent Class</h3><p>与以往的普通程序不同，javaagent的入口<strong>必须</strong>为 <code>premain</code> 函数，并且对函数签名也有要求，javaagent 仅接受两个签名的函数，分别为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 第一种，优先加载</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String slotConfFilePath, Instrumentation inst)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String slotConfFilePath)</span></span><br></pre></td></tr></table></figure>
+
+<p>jvm 优先加载含有 <code>Instrumentation</code> 签名的方法，如果没有<code>第一种</code>方法则会加载<code>第二种</code>方法。我们可以对 <code>Instrumentation</code> 进行操作以达到我们操作 class 文件的目的， <code>Instrumentation</code> 定义如下：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Instrumentation</span> &#123;</span><br><span class="line">    <span class="comment">//增加一个Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer, <span class="type">boolean</span> canRetransform)</span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//在类加载之前，重新定义 Class 文件，ClassDefinition 表示对一个类新的定义，如果在类加载之后，需要使用 retransformClasses 方法重新定义。addTransformer方法配置之后，后续的类加载都会被Transformer拦截。对于已经加载过的类，可以执行retransformClasses来重新触发这个Transformer的拦截。类加载的字节码被修改后，除非再次被retransform，否则不会恢复。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">removeTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isRetransformClassesSupported</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//在类加载之后，重新定义 Class。这个很重要，该方法是1.6 之后加入的，事实上，该方法是 update 了一个类。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">retransformClasses</span><span class="params">(Class&lt;?&gt;... classes)</span> <span class="keyword">throws</span> UnmodifiableClassException;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isRedefineClassesSupported</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">redefineClasses</span><span class="params">(ClassDefinition... definitions)</span> <span class="keyword">throws</span>  ClassNotFoundException, UnmodifiableClassException;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isModifiableClass</span><span class="params">(Class&lt;?&gt; theClass)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">    Class[] getAllLoadedClasses();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">    Class[] getInitiatedClasses(ClassLoader loader);</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="title function_">getObjectSize</span><span class="params">(Object objectToSize)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">appendToBootstrapClassLoaderSearch</span><span class="params">(JarFile jarfile)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">appendToSystemClassLoaderSearch</span><span class="params">(JarFile jarfile)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isNativeMethodPrefixSupported</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">setNativeMethodPrefix</span><span class="params">(ClassFileTransformer transformer, String prefix)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以操作 <code>premain</code> 方法中的 <code>Instrumentation</code> 对象来添加相关的操作。我们主要会用到 <code>addTransformer</code> 来添加转换类的实现，具体的为 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/transform/SlotTransformer.java">SlotTransformer</a></p>
+<h3 id="ClassFileTransformer"><a href="#ClassFileTransformer" class="headerlink" title="ClassFileTransformer"></a>ClassFileTransformer</h3><p>在 Instrumentation 接口中，定义了添加和移除 ClassFileTransformer 的方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Instrumentation</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer, <span class="type">boolean</span> canRetransform)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">removeTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 ClassFileTransformer 接口中，定义了 transform 抽象方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="type">byte</span>[] transform(ClassLoader         loader,</span><br><span class="line">                     String              className,</span><br><span class="line">                     Class&lt;?&gt;            classBeingRedefined,</span><br><span class="line">                     ProtectionDomain    protectionDomain,</span><br><span class="line">                     <span class="type">byte</span>[]              classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException;</span><br><span class="line">            </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们想对 Class 进行 bytecode instrumentation 时，就要实现 <code>ClassFileTransformer</code> 接口，并重写它的 <code>transform</code> 方法。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p><code>javaagent</code> 主要以 <code>jar</code> 包的形式提供服务，并在使用 java 命令时以 <code>-javaagent:jar_path[=option]</code> 来启动服务，示例如下：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -javaagent:./target/TheAgent.jar -jar Demo.jar</span><br></pre></td></tr></table></figure>
+
+<h2 id="埋点思路"><a href="#埋点思路" class="headerlink" title="埋点思路"></a>埋点思路</h2><h3 id="如何确定埋点范围"><a href="#如何确定埋点范围" class="headerlink" title="如何确定埋点范围"></a>如何确定埋点范围</h3><p>通过外部配置文件来指定。我们支持读取特定格式的 <code>properties</code> 文件解析出哪些方法需要进行埋点，<code>properties</code> 文件的路径通过 <code>-javaagent:/your/properties/file/path</code> 传递给 <code>premain</code> 的 <code>String</code> 参数。<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/SlotAgentBootstrap.java">读取 <code>properties</code> 文件的方法</a>如下所示：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 初始化埋点配置文件</span></span><br><span class="line"><span class="comment">* &lt;p&gt;</span></span><br><span class="line"><span class="comment">* 本来初始化配置文件的操作在 &#123;<span class="doctag">@link</span> InitValve&#125; 中进行初始化，但现在需要对埋点日志的文件名按服务名进行划分，需要先获取到本次埋点</span></span><br><span class="line"><span class="comment">* 的服务名，所以提前到 &#123;<span class="doctag">@link</span> SlotAgentBootstrap&#125; 中进行</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> filePath 埋点配置文件路径</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span> 埋点配置文件 properties</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Properties <span class="title function_">init</span><span class="params">(String filePath)</span> &#123;</span><br><span class="line">    AnsiLog.info(<span class="string">&quot;加载的配置文件路径为:&#123;&#125;&quot;</span>, filePath);</span><br><span class="line">    <span class="type">Properties</span> <span class="variable">prop</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        prop = PropertiesUtils.loadExternalProp(filePath);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        AnsiLog.info(<span class="string">&quot;配置文件不存在，程序退出...&quot;</span>);</span><br><span class="line">        System.exit(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取服务名称已初始化埋点日志名称</span></span><br><span class="line">    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">serviceName</span> <span class="operator">=</span> prop.getProperty(SLOT_SERVICE);</span><br><span class="line">    AnsiLog.debug(serviceName);</span><br><span class="line">    <span class="comment">// 初始化日志</span></span><br><span class="line">    SlotLogUtils.initLogger(serviceName);</span><br><span class="line">    <span class="keyword">return</span> prop;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h3><h4 id="方法自身没有抛出异常"><a href="#方法自身没有抛出异常" class="headerlink" title="方法自身没有抛出异常"></a>方法自身没有抛出异常</h4><p>我们将目标方法代码块使用统一的 <code>try-cache</code> 进行处理，不论原方法是否抛出异常，我们都假定其会抛出异常，进行异常捕获并抛出。</p>
+<blockquote>
+<p>在一开始实现过程中并没有对所有方法都进行异常捕获，但是在 spring boot 程序测试中发现 spring boot 存在全局异常捕获机制导致埋点流程被打断，因为进行了异常抛出所以代码的后续被 spring boot 接管了，而不会沿着原本的业务进行下去，那么埋点逻辑处理的就不完整，埋点数据收集的不完整，所以需要全局捕获异常，强制代码块走到埋点逻辑的结束。</p>
+</blockquote>
+<p>例如原方法如下所示：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;hello world&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过全局异常处理之后变为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">()</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">    <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello world&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable t) &#123;<span class="comment">// 埋点系统插入代码</span></span><br><span class="line">        <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">        <span class="keyword">throw</span> t;</span><br><span class="line">    &#125;<span class="comment">// 埋点系统插入代码</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方法自身抛出异常-处理异常"><a href="#方法自身抛出异常-处理异常" class="headerlink" title="方法自身抛出异常&#x2F;处理异常"></a>方法自身抛出异常&#x2F;处理异常</h4><p>如果方法自身抛出了异常或者对异常进行了处理，那么我们会在源代码的 <code>catch</code> 代码块中记录异常类型、异常信息和异常堆栈，以供后续分析。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">calc</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">1</span> / <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">e</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过全局处理之后</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">calc</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">var1</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">var2</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">    StackTraceElement[] var3 = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">1</span> / <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">        var1 = e.getClass.getName();</span><br><span class="line">        <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">        var2 = e.getMessage();</span><br><span class="line">        <span class="comment">// 埋点系统插入代码</span></span><br><span class="line">        var3 = e.getStackTrace();</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">e</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法耗时计算、方法开始时间"><a href="#方法耗时计算、方法开始时间" class="headerlink" title="方法耗时计算、方法开始时间"></a>方法耗时计算、方法开始时间</h3><p>我们在方法代码块的最开始插入获取当前系统时间的时间戳和 <code>LocalDateTime</code> 来确定方法的开始时机，在方法的结尾、每个 <code>catch</code> 代码块中插入获取方法的结束时间代码并使用代码开始的时间戳减去方法结束的时间戳以获取方法的执行时间。</p>
+<h3 id="埋点数据的处理"><a href="#埋点数据的处理" class="headerlink" title="埋点数据的处理"></a>埋点数据的处理</h3><p>为了埋点给系统带来最低的性能影响，埋点系统采用 <a target="_blank" rel="noopener" href="https://github.com/LMAX-Exchange/disruptor"><code>disruptor</code></a> 消息中间件来处理埋点产生的埋点数据得到及时有效的处理。<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/tree/main/slot-agent/src/main/java/zenv/slot/disruptor">源码在这</a></p>
+<p>刚开始埋点系统采用的是 Java 自带的阻塞队列，发现存在性能问题和 OOM 问题，后期调研到 <code>disruptor</code> 组件，性能有了质的提升。在百万数据量下使用的内存和处理速度都有提升。</p>
+<h3 id="字节码插桩"><a href="#字节码插桩" class="headerlink" title="字节码插桩"></a>字节码插桩</h3><p>slot 使用 ASM 字节码操作工具来对 Java 源码进行修改。JDK 自带的字节码操作框架无需额外引入框架，降低了 javaagent jar 包的体积。</p>
+<p>ASM 是较为低级别的 API，使用和学习都存在一定的门槛，需要对 ClassFile 的结构有较深的理解和认识。</p>
+<p>slot 是如何使用 ASM 进行字节码插桩的，可以参见<a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/asm/SlotMethodAroundWithDisruptorAdapter2.java">这里</a></p>
+<h2 id="埋点思路与-javaagent-的结合"><a href="#埋点思路与-javaagent-的结合" class="headerlink" title="埋点思路与 javaagent 的结合"></a>埋点思路与 javaagent 的结合</h2><p>以上所有的思路全都依赖 <code>ClassFileTransformer</code> 中的 <code>transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer)</code> 方法来实现。特别的，slot 中的实现为 <a target="_blank" rel="noopener" href="https://github.com/zenvzenv/slot/blob/main/slot-agent/src/main/java/zenv/slot/transform/SlotTransformer.java">SlotTransformer</a>。</p>
+<p>我们主要会用到 loader、className 和 classfileBuffer 参数。</p>
+<ol>
+<li><p>loader 是当前被加载到 class 的类加载器，这个参数非常有用，我们需要使用该加载器来加载修改字节码之后的类，否则可能会出现 ClassNotFoundException</p>
+<blockquote>
+<p>特别的 spring boot 的 jar 包被称为 fat_jar，它内部的类加载机制由 spring 来控制，我们需要使用 spring 的类加载器来对修改后的类进行加载，否则会报 ClassNotFoundException</p>
+</blockquote>
+</li>
+<li><p>className 用来与埋点配置文件中的配置项进行匹配，用来确定哪些类需要进行埋点，如果不似乎我们需要埋点的类那么可以直接返回 <code>null</code>，jvm 会自动加载原本的 class</p>
+</li>
+<li><p>classfileBuffer 存放了当前加载的 class 的字节码信息，我们使用 ASM 组件来操作字节码，插入我们需要的埋点字节码</p>
+</li>
+</ol>
+<p>jvm 保证在 transform 的过程如果出现异常的话最终加载的是未经修改的 class。</p>
+<h2 id="展望"><a href="#展望" class="headerlink" title="展望"></a>展望</h2><ol>
+<li>对于跨进程和跨机器的集群服务支持埋点服务</li>
+<li>可以更换为 attach api 来热更新埋点配置</li>
+<li>目前只能通过配置文件的方式来指定埋点的范围，可以考虑使用 jar 包探测，探测目标工程为 spring boot、netty、grpc或其他工程来确定埋点范围</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://lsieun.github.io/java-agent/java-agent-01.html">Java Agent系列一：基础篇</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2023/03/22/Java-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%88%86%E4%BA%AB-javaagent%E7%AF%87/">https://zenvzenv.github.io/2023/03/22/Java-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%88%86%E4%BA%AB-javaagent%E7%AF%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9F%8B%E7%82%B9/">埋点</a><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/javaagent/">javaagent</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/03/23/Apache-Livy-%E5%A6%82%E4%BD%95%E5%B0%86-SparkSQL-%E7%BB%93%E6%9E%9C%E4%BD%9C%E4%B8%BA-json-%E8%BF%94%E5%9B%9E%E7%9A%84%E6%96%B9%E6%B3%95%E5%88%86%E4%BA%AB/" title="Apache Livy 如何将 SparkSQL 结果作为 json 返回的方法分享"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Apache Livy 如何将 SparkSQL 结果作为 json 返回的方法分享</div></div></a></div><div class="next-post pull-right"><a href="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="Hexo+Butterfly+GitHubPages 搭建个人博客"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Hexo+Butterfly+GitHubPages 搭建个人博客</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/04/03/Java-%E5%8D%95%E7%82%B9%E5%BA%94%E7%94%A8%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E8%B0%83%E7%94%A8%E9%93%BE%E8%B7%AF%E5%88%86%E6%9E%90/" title="Java 单点应用获取方法调用链路分析"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-04-03</div><div class="title">Java 单点应用获取方法调用链路分析</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%8B%E7%82%B9%E7%B3%BB%E7%BB%9F%E5%AF%B9%E6%AF%94"><span class="toc-number">1.</span> <span class="toc-text">埋点系统对比</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%9F%8B%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">侵入式埋点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%9F%8B%E7%82%B9%E4%BC%98%E7%82%B9"><span class="toc-number">1.1.1.</span> <span class="toc-text">侵入式埋点优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BE%B5%E5%85%A5%E5%BC%8F%E5%9F%8B%E7%82%B9%E7%BC%BA%E7%82%B9"><span class="toc-number">1.1.2.</span> <span class="toc-text">侵入式埋点缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E4%BE%B5%E5%85%A5%E5%9F%8B%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">无侵入埋点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E4%BE%B5%E5%85%A5%E5%9F%8B%E7%82%B9%E4%BC%98%E7%82%B9"><span class="toc-number">1.2.1.</span> <span class="toc-text">无侵入埋点优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E4%BE%B5%E5%85%A5%E5%9F%8B%E7%82%B9%E7%BC%BA%E7%82%B9"><span class="toc-number">1.2.2.</span> <span class="toc-text">无侵入埋点缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javaagent"><span class="toc-number">2.</span> <span class="toc-text">javaagent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Manifest"><span class="toc-number">2.1.</span> <span class="toc-text">Manifest</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.1.</span> <span class="toc-text">结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90"><span class="toc-number">2.2.</span> <span class="toc-text">如何生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#maven-%E6%8F%92%E4%BB%B6"><span class="toc-number">2.2.1.</span> <span class="toc-text">maven 插件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E5%88%9B%E5%BB%BA"><span class="toc-number">2.2.2.</span> <span class="toc-text">自己创建</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-Class"><span class="toc-number">2.3.</span> <span class="toc-text">Agent Class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ClassFileTransformer"><span class="toc-number">2.4.</span> <span class="toc-text">ClassFileTransformer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">2.5.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%8B%E7%82%B9%E6%80%9D%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">埋点思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%9F%8B%E7%82%B9%E8%8C%83%E5%9B%B4"><span class="toc-number">3.1.</span> <span class="toc-text">如何确定埋点范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%87%AA%E8%BA%AB%E6%B2%A1%E6%9C%89%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.1.</span> <span class="toc-text">方法自身没有抛出异常</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%87%AA%E8%BA%AB%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8-%E5%A4%84%E7%90%86%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.2.</span> <span class="toc-text">方法自身抛出异常&#x2F;处理异常</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E8%80%97%E6%97%B6%E8%AE%A1%E7%AE%97%E3%80%81%E6%96%B9%E6%B3%95%E5%BC%80%E5%A7%8B%E6%97%B6%E9%97%B4"><span class="toc-number">3.3.</span> <span class="toc-text">方法耗时计算、方法开始时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%8B%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">3.4.</span> <span class="toc-text">埋点数据的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E6%8F%92%E6%A1%A9"><span class="toc-number">3.5.</span> <span class="toc-text">字节码插桩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%8B%E7%82%B9%E6%80%9D%E8%B7%AF%E4%B8%8E-javaagent-%E7%9A%84%E7%BB%93%E5%90%88"><span class="toc-number">4.</span> <span class="toc-text">埋点思路与 javaagent 的结合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%95%E6%9C%9B"><span class="toc-number">5.</span> <span class="toc-text">展望</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-number">6.</span> <span class="toc-text">Reference</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕">【macOS】如何在macOS上使用whisper来为视频添加字幕</a><time datetime="2025-04-22T14:47:15.000Z" title="Created 2025-04-22 22:47:15">2025-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/13/%E3%80%90macOS%E3%80%91macOS%E4%B8%8A%E9%80%9A%E8%BF%87UTM%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEmacOS%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="【macOS】macOS上通过UTM安装并配置macOS虚拟机">【macOS】macOS上通过UTM安装并配置macOS虚拟机</a><time datetime="2025-04-13T02:50:00.000Z" title="Created 2025-04-13 10:50:00">2025-04-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</a><time datetime="2025-04-05T05:53:15.000Z" title="Created 2025-04-05 13:53:15">2025-04-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

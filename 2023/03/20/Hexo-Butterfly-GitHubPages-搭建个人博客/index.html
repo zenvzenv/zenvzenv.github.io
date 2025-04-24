@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Hexo+Butterfly+GitHubPages 搭建个人博客 | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="你可能会问本站是怎么来的？既然你诚心诚意的发文了，那我就大发慈悲的告诉你！  前置准备安装 git前去 gitbash 官网 根据自己的系统下载 gitbash。 如果你从未安装过 gitbash，那么在安装过程中只要一路默认即可，需要注意的是软件的安装路径；如果你安装过 gitbash，那么就按自己的喜好进行安装即可。 当你已经安装好 gitbash 后，我们还需要一些必要的配置，请到工作目录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo+Butterfly+GitHubPages 搭建个人博客">
+<meta property="og:url" content="https://zenvzenv.github.io/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="你可能会问本站是怎么来的？既然你诚心诚意的发文了，那我就大发慈悲的告诉你！  前置准备安装 git前去 gitbash 官网 根据自己的系统下载 gitbash。 如果你从未安装过 gitbash，那么在安装过程中只要一路默认即可，需要注意的是软件的安装路径；如果你安装过 gitbash，那么就按自己的喜好进行安装即可。 当你已经安装好 gitbash 后，我们还需要一些必要的配置，请到工作目录">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2023-03-20T11:19:12.000Z">
+<meta property="article:modified_time" content="2023-03-20T11:19:12.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo+Butterfly+GitHubPages 搭建个人博客',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-20 19:19:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Hexo+Butterfly+GitHubPages 搭建个人博客</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-03-20T11:19:12.000Z" title="Created 2023-03-20 19:19:12">2023-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-03-20T11:19:12.000Z" title="Updated 2023-03-20 19:19:12">2023-03-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>5min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Hexo+Butterfly+GitHubPages 搭建个人博客"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>你可能会问本站是怎么来的？<br>既然你诚心诚意的发文了，那我就大发慈悲的告诉你！</p>
+</blockquote>
+<h2 id="前置准备"><a href="#前置准备" class="headerlink" title="前置准备"></a>前置准备</h2><h3 id="安装-git"><a href="#安装-git" class="headerlink" title="安装 git"></a>安装 git</h3><p>前去 <a target="_blank" rel="noopener" href="https://git-scm.com/downloads">gitbash 官网</a> 根据自己的系统下载 <code>gitbash</code>。</p>
+<p>如果你从未安装过 gitbash，那么在安装过程中只要一路默认即可，需要注意的是软件的安装路径；如果你安装过 gitbash，那么就按自己的喜好进行安装即可。</p>
+<p>当你已经安装好 gitbash 后，我们还需要一些必要的配置，请到工作目录右键选择 <code>Git bash here</code> 来启动 gitbash，并在终端执行如下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置 Git 用户名：</span></span><br><span class="line">git config --global user.name &quot;your github username&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">确认您正确设置了 Git 用户名：</span></span><br><span class="line">git config --global user.name</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置 Git Email：</span></span><br><span class="line">git config --global user.email &quot;your github email&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">确认在 Git 中正确设置了电子邮件地址：</span></span><br><span class="line">git config --global user.email</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置-GitHub-密钥"><a href="#配置-GitHub-密钥" class="headerlink" title="配置 GitHub 密钥"></a>配置 GitHub 密钥</h4><p>如果已经配置过密钥可以跳过</p>
+<ol>
+<li>首先打开 gitbash 终端执行如下命令生成本地密钥</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>之后一路回车即可。命令执行完毕之后会生成 <code>~/.ssh/</code> 目录，目录下有 <code>id_rsa</code> 和 <code>id_rsa.pub</code> 两个文件，将 <code>id_rsa.pub</code> 文件中的内容复制到 GitHub 中。</p>
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/setting.png" alt="setting"><br><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/ssh_and_gpg_keys.png" alt="ssh_and_gpg_keys"><br><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/new_ssh_key.png" alt="new_ssh_key"><br><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/add_ssh_key.png" alt="add_ssh_key"></p>
+<h3 id="安装-nodejs"><a href="#安装-nodejs" class="headerlink" title="安装 nodejs"></a>安装 nodejs</h3><p>前去 <a target="_blank" rel="noopener" href="https://nodejs.org/en/download">nodejs 官网</a> 下载自己系统对应版本的 LTS nodejs。安装过程一直默认下一步即可，需要注意的就是 nodejs 安装的路径。</p>
+<p>安装完毕之后需要确认 nodejs 是否安装成功，可以打开 gitbash 终端来进行确认，打开 gitbash 终端之后输入如下命令来确认：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 nodejs 版本</span></span><br><span class="line">node -v</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 npm 版本</span></span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/nodejs_install_success.png" alt="nodejs_install_success"></p>
+<p>如果以上命令能够正确输出版本号即表明 nodejs 安装成功。</p>
+<h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>打开 gitbash 终端，输入 Hexo 安装命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+
+<p>安装过程可能会比较长，请耐心等待。安装成功后可以输入如下命令来验证 Hexo 是否安装过。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/hexo_install_success.png" alt="hexo_install_success"></p>
+<p>当安装成功后我们可以使用如下命令来生成一个空的博客框架</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init &lt;folder&gt;</span><br><span class="line">cd &lt;folder&gt;</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>新建完毕之后目标文件夹的目录结构如下所示：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── _config.yml</span><br><span class="line">├── package.json</span><br><span class="line">├── scaffolds</span><br><span class="line">├── source</span><br><span class="line">|   ├── _drafts</span><br><span class="line">|   └── _posts</span><br><span class="line">└── themes</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>hexo s</code> 来启动博客服务并在本地访问 <code>http://localhost:4000/</code> 来访问博客。</p>
+<h3 id="安装-butterfly"><a href="#安装-butterfly" class="headerlink" title="安装 butterfly"></a>安装 butterfly</h3><p>在 Hexo 生成的博客的根目录，执行如下命令来安装 butterfly 主题。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly</span><br><span class="line">npm install hexo-theme-butterfly</span><br><span class="line">npm install hexo-renderer-pug hexo-renderer-stylus</span><br></pre></td></tr></table></figure>
+
+<p>并将根目录下的 <code>_config.yml</code> 中的 <code>theme</code> 改为 <code>butterfly</code>，然后启动 Hexo 即可看到主题效果。你也可以进行一些<a target="_blank" rel="noopener" href="https://butterfly.js.org/posts/21cfbf15/">配置</a>来个性化主题</p>
+<h2 id="创建-GitHub-Repository"><a href="#创建-GitHub-Repository" class="headerlink" title="创建 GitHub Repository"></a>创建 GitHub Repository</h2><p>登录自己的 GitHub 账号并创建一个形如 <code>your_user_name.github.io</code> (其中 <code>your_user_name</code> 是你的 GitHub 用户名)的<strong>公共</strong>仓库和一个存放博客源码的<strong>私有</strong>仓库，私有仓库名字随意。</p>
+<p>私有仓库是为了保护源码不泄露，当私有博客仓库编译渲染完毕之后会将最终页面 push 到 <code>your_user_name.github.io</code> 仓库中，以达到展示的目的和保护源码的目的。</p>
+<p>公共仓库 <code>your_user_name.github.io</code> 是为了存放博客的最终编译完毕的文件，通过 GitHubPages 来对外进行展示。</p>
+<p>共有仓库和私有仓库通过 GitHub Token 来进行联系。</p>
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/new_repo.png" alt="new_repo"></p>
+<h2 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h2><p>找到博客的工作目录，右键打开 gitbash 终端，初始化一个 Hexo 博客。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init &lt;your_blog_name&gt;</span><br><span class="line">cd &lt;your_blog_name&gt;</span><br><span class="line">npm install</span><br><span class="line">git clone -b master https://github.com/jerryc127/hexo-theme-butterfly.git themes/butterfly</span><br><span class="line">rm -rf themes/butterfly/.git</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>需要注意的是我们需要把 butterfly 的 <code>.git</code> 目录删除，因为会和我们博客仓库的 <code>.git</code> 冲突导致页面渲染失败。</p>
+</blockquote>
+<p>至此，博客就创建了出来，随后我们需要将源文件上传到私有仓库中。</p>
+<h2 id="上传源码"><a href="#上传源码" class="headerlink" title="上传源码"></a>上传源码</h2><p>我们可以使用如下命令将博客源码上传到 GitHub 仓库中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd &lt;your_blog_name&gt;</span><br><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;init my blog&quot;</span><br><span class="line">git branch -M main</span><br><span class="line">git remote add origin &lt;your_github_repo&gt;</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成-GitHub-Token"><a href="#生成-GitHub-Token" class="headerlink" title="生成 GitHub Token"></a>生成 GitHub Token</h3><p>我们可以在个人设置中创建 token</p>
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/setting.png" alt="setting"><br><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/new_github_token.png" alt="new_github_token"></p>
+<p>我们需要给 token 赋予 <code>repo</code> 和 <code>workflow</code> 权限；建议设置90天的有效期；<strong>将 token 复制下来</strong>，否则忘记的话还需要重新生成。</p>
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/new_personal_token.png" alt="new_personal_token"></p>
+<h3 id="设置-GitHub-Token"><a href="#设置-GitHub-Token" class="headerlink" title="设置 GitHub Token"></a>设置 GitHub Token</h3><blockquote>
+<p>设置 Token 是为了将私有博客仓库中编译出来的博客页面能够 push 到 <code>your_user_name.github.io</code> 仓库中，以达到源码不泄露的目的。</p>
+</blockquote>
+<p>打开私有博客仓库的 <code>Setting</code></p>
+<p><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/private_secrets_setting.png" alt="private_secrets_setting"><br><img src="/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/private_new_secret.png" alt="private_new_secret"></p>
+<h2 id="创建-workflow"><a href="#创建-workflow" class="headerlink" title="创建 workflow"></a>创建 workflow</h2><p>在博客的根目录下创建 <code>.github/workflow/hexo-deploy.yml</code> 文件(文件名无所谓，但路径必须是这个路径)。在 <code>hexo-deploy.yml</code> 文件中写入一下内容：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Pages</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span> <span class="comment"># default branch</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-and-deploy:</span> </span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">permissions:</span></span><br><span class="line">      <span class="attr">contents:</span> <span class="string">write</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">checkout</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">build</span> <span class="string">and</span> <span class="string">deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">theme-keep/hexo-deploy-github-pages-action@master</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">          <span class="attr">PERSONAL_TOKEN:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.HEXO_DEPLOY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">PUBLISH_REPOSITORY:</span> <span class="string">&lt;your</span> <span class="string">github</span> <span class="string">repo&gt;</span></span><br><span class="line">          <span class="attr">BRANCH:</span> <span class="string">main</span></span><br><span class="line">          <span class="attr">PUBLISH_DIR:</span> <span class="string">./public</span></span><br><span class="line">  </span><br></pre></td></tr></table></figure>
+
+<p>以上 yml 文件只需要修改 <code>PUBLISH_REPOSITORY</code> 为你自己的仓库即可，此仓库必须为 <code>your_user_name.github.io</code>。</p>
+<p>具体配置请参阅 <a target="_blank" rel="noopener" href="https://docs.github.com/en/actions">GitHub Action</a>。</p>
+<p>此处使用了 <code>hexo-deploy-github-pages-action</code> Action 插件，可以前去 <a href="git@github.com:theme-keep/hexo-deploy-github-pages-action.git">theme-keep&#x2F;hexo-deploy-github-pages-action</a>查看具体用法。后面可能也会写一篇文章来介绍下 GitHub Action。</p>
+<p>创建好 <code>.github/workflow/hexo-deploy.yml</code> 之后，将其上传到 GitHub 中，GitHub 会自动触发构建任务，来对博客进行构建。具体的，可以在私有博客仓库的 Action 中进行查看。构建完成后会自动将构建好的工程 push 到 <code>your_user_name.github.io</code> 仓库中进行 GitHubPages 部署，待 GitHubPages 部署完毕之后通过 <code>https://your_user_name.github.io</code> 来访问博客。</p>
+<p>至此博客基本搭建完毕。</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>如遇到什么问题可以与我取得联系，虽然我也可能不会，但我会尽力解答(^^ゞ</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">https://zenvzenv.github.io/2023/03/20/Hexo-Butterfly-GitHubPages-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hexo/">hexo</a><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B/">教程</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/03/22/Java-%E6%97%A0%E7%97%95%E5%9F%8B%E7%82%B9%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF%E5%88%86%E4%BA%AB-javaagent%E7%AF%87/" title="Java 无痕埋点实现思路分享-javaagent篇"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Java 无痕埋点实现思路分享-javaagent篇</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">前置准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-git"><span class="toc-number">1.1.</span> <span class="toc-text">安装 git</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-GitHub-%E5%AF%86%E9%92%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">配置 GitHub 密钥</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-nodejs"><span class="toc-number">1.2.</span> <span class="toc-text">安装 nodejs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Hexo"><span class="toc-number">1.3.</span> <span class="toc-text">安装 Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-butterfly"><span class="toc-number">1.4.</span> <span class="toc-text">安装 butterfly</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-GitHub-Repository"><span class="toc-number">2.</span> <span class="toc-text">创建 GitHub Repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="toc-number">3.</span> <span class="toc-text">创建博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%BA%90%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">上传源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90-GitHub-Token"><span class="toc-number">4.1.</span> <span class="toc-text">生成 GitHub Token</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-GitHub-Token"><span class="toc-number">4.2.</span> <span class="toc-text">设置 GitHub Token</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-workflow"><span class="toc-number">5.</span> <span class="toc-text">创建 workflow</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD"><span class="toc-number">6.</span> <span class="toc-text">后续</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕">【macOS】如何在macOS上使用whisper来为视频添加字幕</a><time datetime="2025-04-22T14:47:15.000Z" title="Created 2025-04-22 22:47:15">2025-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/13/%E3%80%90macOS%E3%80%91macOS%E4%B8%8A%E9%80%9A%E8%BF%87UTM%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEmacOS%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="【macOS】macOS上通过UTM安装并配置macOS虚拟机">【macOS】macOS上通过UTM安装并配置macOS虚拟机</a><time datetime="2025-04-13T02:50:00.000Z" title="Created 2025-04-13 10:50:00">2025-04-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</a><time datetime="2025-04-05T05:53:15.000Z" title="Created 2025-04-05 13:53:15">2025-04-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

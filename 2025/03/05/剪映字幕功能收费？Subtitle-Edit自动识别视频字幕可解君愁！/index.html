@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！ | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="众所周知，剪映高版本的自动识别视频字幕的功能变成收费的了，在之前的版本中，虽然是收费的但是还是有白嫖的途径，比如在识别完字幕后预览全屏视频全屏播放然后使用录屏软件进行录制；或者找到视频的临时存放目录，找到字幕的 json 文件，在网上找到转义工具也是能白嫖的，但现在这些方式全部失效。 接下来就为大家介绍本地使用 Subtitle Edit 使用 Whisper 来自动识别视频字幕，本地部署大模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">
+<meta property="og:url" content="https://zenvzenv.github.io/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="众所周知，剪映高版本的自动识别视频字幕的功能变成收费的了，在之前的版本中，虽然是收费的但是还是有白嫖的途径，比如在识别完字幕后预览全屏视频全屏播放然后使用录屏软件进行录制；或者找到视频的临时存放目录，找到字幕的 json 文件，在网上找到转义工具也是能白嫖的，但现在这些方式全部失效。 接下来就为大家介绍本地使用 Subtitle Edit 使用 Whisper 来自动识别视频字幕，本地部署大模">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2025-03-05T14:13:04.000Z">
+<meta property="article:modified_time" content="2025-04-24T23:20:55.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="字幕">
+<meta property="article:tag" content="剪映">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="Subtitle Edit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-04-25 07:20:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-24T23:20:55.000Z" title="Updated 2025-04-25 07:20:55">2025-04-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>3min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><iframe width="760" height="427"
+src="https://www.youtube.com/embed/0JygNqGsSfE"frameborder="0"
+allowfullscreen></iframe>
+
+<p>众所周知，剪映高版本的自动识别视频字幕的功能变成收费的了，在之前的版本中，虽然是收费的但是还是有白嫖的途径，比如在识别完字幕后预览全屏视频全屏播放然后使用录屏软件进行录制；或者找到视频的临时存放目录，找到字幕的 json 文件，在网上找到转义工具也是能白嫖的，但现在这些方式全部失效。</p>
+<p>接下来就为大家介绍本地使用 Subtitle Edit 使用 Whisper 来自动识别视频字幕，本地部署大模型识别视频字幕，隐私更好，可定制性更高。</p>
+<h2 id="Subtitle-Edit-安装"><a href="#Subtitle-Edit-安装" class="headerlink" title="Subtitle Edit 安装"></a>Subtitle Edit 安装</h2><p>Subtitle Edit 是一款开源的字幕编辑器软件，可以利用大模型来帮我我们识别视频中的语音并自动识别成 srt 字幕文件</p>
+<p>我们先去 <a target="_blank" rel="noopener" href="https://github.com/SubtitleEdit/subtitleedit/releases">Subtitle Edit 下载页面</a> 下载软件，Subtitle Edit 支持 Windows 和 Linux，我本地是 Windows 系统，我选择下载 <code>SubtitleEdit-4.0.11-Setup.zip</code> 安装包。</p>
+<p>下载完毕之后，解压出安装程序，双击安装包进行安装。此时 Windows 会弹框提示无法识别 Subtitle Edit 软件，这个可以忽略，点击<code>更多信息</code>后再点击<code>仍要运行</code>即可</p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/windows%E4%BF%9D%E6%8A%A4.png" alt="windows保护"></p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E4%BB%8D%E8%A6%81%E8%BF%90%E8%A1%8C.png" alt="仍要运行"></p>
+<p>我们选择简体中文进行安装</p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%E5%AE%89%E8%A3%85.png" alt="简体中文安装"></p>
+<p>之后一直点击下一步即可完成安装。</p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90.png" alt="安装完成"></p>
+<p>安装完成后，我们勾选 <code>运行 Subtitle Edit</code> 选项来启动 Subtitle Edit，第一次启动需要安装 ffmpeg，安装过程很快，等待自动安装完毕即可。</p>
+<blockquote>
+<p>安装 ffmpeg 需要科学上网</p>
+</blockquote>
+<h2 id="设置中文"><a href="#设置中文" class="headerlink" title="设置中文"></a>设置中文</h2><p>我们打开 Subtitle Edit 之后，找到 <code>Options</code> 选项卡，然后找到 <code>Choose language</code> 选项</p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E4%BF%AE%E6%94%B9%E8%AF%AD%E8%A8%80.png" alt="修改语言"></p>
+<p>下拉选项找到简体中文选项</p>
+<p><img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87.png" alt="简体中文"></p>
+<h2 id="制作字幕"><a href="#制作字幕" class="headerlink" title="制作字幕"></a>制作字幕</h2><p>以上准备工作结束之后，我们就可以开始制作字幕了。</p>
+<ol>
+<li><p>找打 <code>视频</code> 并 <code>打开视频文件</code>，找到需要识别的视频文件，</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E6%89%93%E5%BC%80%E8%A7%86%E9%A2%91%E6%96%87%E4%BB%B6.png" alt="打开视频文件"></p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%92%8C%E9%9F%B3%E8%BD%A8.png" alt="视频播放和音轨"></p>
+</li>
+<li><p>找到 <code>语音识别</code> 选项</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB.png" alt="语音识别"></p>
+</li>
+<li><p>第一次打开时会自动下载 <code>Whisper-XXL</code> 引擎，等待下载完成即可</p>
+<blockquote>
+<p>下载语音识别引擎时需要科学上网</p>
+</blockquote>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB%E5%BC%95%E6%93%8E.png" alt="语音识别引擎"></p>
+</li>
+<li><p>语音识别引擎下载完毕之后，我们需要选择语言模型，如果本地机器性能一般的话，我建议使用 <code>medium</code> 尺寸的模型</p>
+<blockquote>
+<p>下载语言模型时需要科学上网</p>
+</blockquote>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E9%80%89%E6%8B%A9%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B.png" alt="选择语言模型"></p>
+<p> Whisper 有多种尺寸可选，<code>tiny</code>,<code>base</code>,<code>small</code>,<code>medium</code>,<code>large</code>，尺寸越大识别的效果越好，也耗时，这个需要看本地机器的性能，如果有 Nvidia 显卡的话可以加速识别过程。</p>
+<p> 我这边尝试了几种尺寸的模型，<code>tiny</code> 和 <code>base</code> 识别出来的效果一般，很多都没有识别出来；<code>medium</code> 效果还是不错的，比较准确，我只需要进行微调即可；<code>large-v3-turbo</code> 这个我本地没有跑出来，可能是我本地的显卡显存太小导致的。但 <code>medium</code> 识别出来的效果我已经很满意了，也就无所谓了。</p>
+<p> 选择完语言模型之后等待模型下载完毕即可。</p>
+</li>
+<li><p>选择视频文件，可以单个文件生成也可以批量文件生成，然后点击 <code>生成</code> 即可。</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E7%94%9F%E6%88%90%E5%AD%97%E5%B9%95.png" alt="生成字幕"></p>
+</li>
+<li><p>等待进度条，将音频转录为文本</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E7%AD%89%E5%BE%85%E8%BF%9B%E5%BA%A6%E6%9D%A1.png" alt="等待进度条"></p>
+</li>
+<li><p>字幕生成完毕</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%AD%97%E5%B9%95%E7%94%9F%E6%88%90%E5%AE%8C%E6%AF%95.png" alt="字幕生成完毕"></p>
+<p> 可以看到左边为字幕，右边为视频</p>
+</li>
+<li><p>微调字幕</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%BE%AE%E8%B0%83%E5%AD%97%E5%B9%95.png" alt="微调字幕"></p>
+<p> 如果识别出来的字幕有错别字，那么可以在文本中直接修改，如果字幕的时间点对不上也可以手动修改起始时间和持续时长</p>
+</li>
+<li><p>将字幕刻录到视频中</p>
+<p> 如果字幕微调结束，那么我们可以把修改后的字幕直接刻录到视频中</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%88%BB%E5%BD%95%E5%AD%97%E5%B9%95.png" alt="刻录字幕"></p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%88%BB%E5%BD%95%E4%B8%AD.png" alt="刻录中"></p>
+</li>
+<li><p>刻录完毕之后，打开视频进行查看，可以发现，字幕已经刻录到视频中。</p>
+<p> <img src="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/%E5%88%BB%E5%BD%95%E6%88%90%E5%8A%9F.png" alt="刻录成功"></p>
+</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到此，我们就成功的使用 Subtitle Edit 从视频中识别出字幕并把字幕刻录到视频中，从此字幕不再求人，自己动手丰衣足食。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/">https://zenvzenv.github.io/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%97%E5%B9%95/">字幕</a><a class="post-meta__tags" href="/tags/%E5%89%AA%E6%98%A0/">剪映</a><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a><a class="post-meta__tags" href="/tags/Subtitle-Edit/">Subtitle Edit</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</div></div></a></div><div class="next-post pull-right"><a href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-22</div><div class="title">【macOS】如何在macOS上使用whisper来为视频添加字幕</div></div></a></div><div><a href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-04-05</div><div class="title">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</div></div></a></div><div><a href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-02-15</div><div class="title">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Subtitle-Edit-%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">Subtitle Edit 安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%AD%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">设置中文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E5%AD%97%E5%B9%95"><span class="toc-number">3.</span> <span class="toc-text">制作字幕</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕">【macOS】如何在macOS上使用whisper来为视频添加字幕</a><time datetime="2025-04-22T14:47:15.000Z" title="Created 2025-04-22 22:47:15">2025-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/13/%E3%80%90macOS%E3%80%91macOS%E4%B8%8A%E9%80%9A%E8%BF%87UTM%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEmacOS%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="【macOS】macOS上通过UTM安装并配置macOS虚拟机">【macOS】macOS上通过UTM安装并配置macOS虚拟机</a><time datetime="2025-04-13T02:50:00.000Z" title="Created 2025-04-13 10:50:00">2025-04-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</a><time datetime="2025-04-05T05:53:15.000Z" title="Created 2025-04-05 13:53:15">2025-04-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

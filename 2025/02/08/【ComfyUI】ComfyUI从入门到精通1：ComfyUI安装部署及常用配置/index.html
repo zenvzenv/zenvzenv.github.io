@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置 | ZENV</title><meta name="author" content="zenv"><meta name="copyright" content="zenv"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述本文主要介绍 ComfyUI 的本地(Windows系统)安装部署，ComfyUI 的一些目录作用介绍，以及一些常用插件的安装方法 安装 ComfyUI下载安装包首先需要去 ComfyUI 的 GitHub 的发布页面 下载 ComfyUI 的压缩包(ComfyUI_windows_portable_nvidia.7z)。可以选择历史版本下载或者下载最新发布版本，推荐下载最新的发布版本。 Co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置">
+<meta property="og:url" content="https://zenvzenv.github.io/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="ZENV">
+<meta property="og:description" content="概述本文主要介绍 ComfyUI 的本地(Windows系统)安装部署，ComfyUI 的一些目录作用介绍，以及一些常用插件的安装方法 安装 ComfyUI下载安装包首先需要去 ComfyUI 的 GitHub 的发布页面 下载 ComfyUI 的压缩包(ComfyUI_windows_portable_nvidia.7z)。可以选择历史版本下载或者下载最新发布版本，推荐下载最新的发布版本。 Co">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg">
+<meta property="article:published_time" content="2025-02-08T06:00:56.000Z">
+<meta property="article:modified_time" content="2025-04-24T23:20:55.000Z">
+<meta property="article:author" content="zenv">
+<meta property="article:tag" content="ComfyUI">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="图片生成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://zenvzenv.github.io/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-04-25 07:20:55'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ZENV" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="ZENV"><span class="site-name">ZENV</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-02-08T06:00:56.000Z" title="Created 2025-02-08 14:00:56">2025-02-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-04-24T23:20:55.000Z" title="Updated 2025-04-25 07:20:55">2025-04-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">801</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>2min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【ComfyUI】ComfyUI从入门到精通1：ComfyUI安装部署及常用配置"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文主要介绍 ComfyUI 的本地(Windows系统)安装部署，ComfyUI 的一些目录作用介绍，以及一些常用插件的安装方法</p>
+<h2 id="安装-ComfyUI"><a href="#安装-ComfyUI" class="headerlink" title="安装 ComfyUI"></a>安装 ComfyUI</h2><h3 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h3><p>首先需要去 <a target="_blank" rel="noopener" href="https://github.com/comfyanonymous/ComfyUI/releases/">ComfyUI 的 GitHub 的发布页面</a> 下载 ComfyUI 的压缩包(ComfyUI_windows_portable_nvidia.7z)。可以选择历史版本下载或者下载最新发布版本，推荐下载最新的发布版本。</p>
+<p>ComfyUI 官方只提供 Windows 系统 + Nvidia 显卡的二进制压缩包，如果你是 Linux 系统或者是 AMD 显卡的话，需要参照 <a target="_blank" rel="noopener" href="https://github.com/comfyanonymous/ComfyUI?tab=readme-ov-file#installing">ComfyUI 的官方 readme 文档</a>安装。</p>
+<h3 id="安装部署-ComfyUI"><a href="#安装部署-ComfyUI" class="headerlink" title="安装部署 ComfyUI"></a>安装部署 ComfyUI</h3><p>安装其实很简单，只需要解压 <code>ComfyUI_windows_portable_nvidia.7z</code> 压缩包即可。</p>
+<p>解压完之后，目录结构如下所示：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">ComfyUI/</span><br><span class="line">python_embeded/</span><br><span class="line">README_VERY_IMPORTANT.txt</span><br><span class="line">run_cpu.bat</span><br><span class="line">run_nvidia_gpu.bat</span><br><span class="line">update/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>ComfyUI</code> 目录为 ComfyUI 的主程序，所有的 Checkpoint 模型、VAE 编码器、插件都在此文件夹中</li>
+<li><code>python_embeded</code> 目录为 ComfyUI 内置 python 运行环境，确保程序一致性</li>
+<li><code>run_cpu.bat</code> 脚本为无 nVidia 显卡的情况下运行 ComfyUI 的启动脚本</li>
+<li><code>run_nvidia_gpu.bat</code> 为以 nVidia 显卡的情况运行 ComfyUI 的启动脚本</li>
+<li><code>update</code> 目录为 ComfyUI 更新时需要用到的目录</li>
+</ul>
+<h2 id="启动-ComfyUI"><a href="#启动-ComfyUI" class="headerlink" title="启动 ComfyUI"></a>启动 ComfyUI</h2><p>如果你的电脑有 nVidia 显卡，那么可以双击 <code>run_nvidia_gpu.bat</code> 脚本启动 ，如果没有 nVidia 显卡则双击 <code>run_cpu.bat</code> 脚本启动。</p>
+<p>第一次启动 ComfyUI 的时候，会有个默认的工作流，其中已经包含了最简单的完整流程，包含模型、提示词、采样器、编码器和图片保存。</p>
+<p>此时，整个流程还不能运行起来，因为新安装的 ComfyUI 没有模型，需要先下载 <a target="_blank" rel="noopener" href="https://huggingface.co/Comfy-Org/stable-diffusion-v1-5-archive/resolve/main/v1-5-pruned-emaonly-fp16.safetensors?download=true">v1-5-pruned-emaonly-fp16.safetensors</a> 模型，下载完之后将模型放到 <code>ComfyUI/models/checkpoints</code> 目录中即可。</p>
+<p>准备就绪之后可以点击 <code>Queue</code> 进行图片生成。</p>
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>ComfyUI 安装插件的方式比较简单，将需要安装的插件放到 <code>ComfyUI\custom_nodes</code> 目录下即可。</p>
+<p>安装 ComfyUI 插件的方式有多种方式：</p>
+<ol>
+<li>下载要安装插件的源码压缩包，将压缩包解压到 <code>ComfyUI/custom_nodes</code> 目录下即可</li>
+<li>直接在 <code>ComfyUI/custom_nodes</code> 目录下 clone 要插件的源码，clone 完成之后插件也就安装完毕</li>
+</ol>
+<blockquote>
+<p>我一般采用第2种方式进行安装。</p>
+</blockquote>
+<h3 id="ComfyUI-Manager-插件"><a href="#ComfyUI-Manager-插件" class="headerlink" title="ComfyUI-Manager 插件"></a>ComfyUI-Manager 插件</h3><p>ComfyUI-Manager 插件可以帮助我们管理 ComfyUI，可以简化安装&#x2F;更新插件、模型的过程，提高效率。</p>
+<p>在 GitHub 上搜索 ComfyUI-Manager 项目，复制 ComfyUI-Manager 的 GitHub 的项目地址，在 <code>ComfyUI/custom_nodes</code> 目录下打开 gitbash，执行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ltdrdata/ComfyUI-Manager comfyui-manager</span><br></pre></td></tr></table></figure>
+
+<p>clone 完之后重启 ComfyUI 完成安装，安装完之后右上角会有 <code>Manager</code> 按钮，里面可以管理 ComfyUI 的插件和模型。</p>
+<h3 id="ComfyUI-Custom-Nodes-AlekPet-插件"><a href="#ComfyUI-Custom-Nodes-AlekPet-插件" class="headerlink" title="ComfyUI_Custom_Nodes_AlekPet 插件"></a>ComfyUI_Custom_Nodes_AlekPet 插件</h3><p>ComfyUI_Custom_Nodes_AlekPet 插件内置了很多实用的 ComfyUI 工作流节点，俗称小瑞士军刀。</p>
+<p>通过 ComfyUI-Manager 来安装会更便捷简单。</p>
+<ol>
+<li>点击 <code>Manager</code> 按钮</li>
+</ol>
+<p><img src="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/ComfyUI%E7%AE%A1%E7%90%86%E6%8C%89%E9%92%AE.png" alt="ComfyUI管理按钮.png"></p>
+<ol start="2">
+<li>点击 <code>Custom Nodes Manager</code> 按钮</li>
+</ol>
+<p><img src="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E6%8C%89%E9%92%AE.png" alt="插件管理按钮.png"></p>
+<ol start="3">
+<li>搜索 ComfyUI_Custom_Nodes_AlekPet 插件并安装</li>
+</ol>
+<p><img src="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/%E6%90%9C%E7%B4%A2%E5%B9%B6%E5%AE%89%E8%A3%85AlekPet%E6%8F%92%E4%BB%B6.png" alt="搜索并安装AlekPet插件.png"></p>
+<p>安装完成后重启 ComfyUI 即可。</p>
+<h2 id="汉化"><a href="#汉化" class="headerlink" title="汉化"></a>汉化</h2><p>在 ComfyUI-Manager 中的 <code>Custom Nodes Manager</code> 里搜索 <code>AIGODLIKE-ComfyUI-Translation</code> 插件。</p>
+<p><img src="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/%E5%AE%89%E8%A3%85%E6%B1%89%E5%8C%96%E6%8F%92%E4%BB%B6.png" alt="安装汉化插件.png"></p>
+<p>在 ComfyUI 的配置中找到相关配置，选择语言为中文即可。</p>
+<p><img src="/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/%E6%B1%89%E5%8C%96ComfyUI%E7%95%8C%E9%9D%A2.png" alt="汉化ComfyUI界面.png"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io">zenv</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://zenvzenv.github.io/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/">https://zenvzenv.github.io/2025/02/08/%E3%80%90ComfyUI%E3%80%91ComfyUI%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A1%EF%BC%9AComfyUI%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ComfyUI/">ComfyUI</a><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E7%89%87%E7%94%9F%E6%88%90/">图片生成</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</div></div></a></div><div class="next-post pull-right"><a href="/2023/11/03/%E4%BB%8E-RPM-%E4%B8%AD%E5%8F%8D%E5%90%91%E6%8F%90%E5%8F%96-SPEC-%E6%96%87%E4%BB%B6/" title="从 RPM 中反向提取 SPEC 文件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">从 RPM 中反向提取 SPEC 文件</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2023/03/21/NlfdceVhiuDmWR2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zenv</div><div class="author-info__description">生于忧患，死于安乐</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">40</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/zenvzenv"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zenvzenv" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:zenv3305@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://www.youtube.com/@ZENVZENV" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-ComfyUI"><span class="toc-number">2.</span> <span class="toc-text">安装 ComfyUI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">2.1.</span> <span class="toc-text">下载安装包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2-ComfyUI"><span class="toc-number">2.2.</span> <span class="toc-text">安装部署 ComfyUI</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-ComfyUI"><span class="toc-number">3.</span> <span class="toc-text">启动 ComfyUI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">安装插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ComfyUI-Manager-%E6%8F%92%E4%BB%B6"><span class="toc-number">4.1.</span> <span class="toc-text">ComfyUI-Manager 插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ComfyUI-Custom-Nodes-AlekPet-%E6%8F%92%E4%BB%B6"><span class="toc-number">4.2.</span> <span class="toc-text">ComfyUI_Custom_Nodes_AlekPet 插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%89%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">汉化</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/22/%E3%80%90macOS%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8macOS%E4%B8%8A%E4%BD%BF%E7%94%A8whisper%E6%9D%A5%E4%B8%BA%E8%A7%86%E9%A2%91%E6%B7%BB%E5%8A%A0%E5%AD%97%E5%B9%95/" title="【macOS】如何在macOS上使用whisper来为视频添加字幕">【macOS】如何在macOS上使用whisper来为视频添加字幕</a><time datetime="2025-04-22T14:47:15.000Z" title="Created 2025-04-22 22:47:15">2025-04-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/13/%E3%80%90macOS%E3%80%91macOS%E4%B8%8A%E9%80%9A%E8%BF%87UTM%E5%AE%89%E8%A3%85%E5%B9%B6%E9%85%8D%E7%BD%AEmacOS%E8%99%9A%E6%8B%9F%E6%9C%BA/" title="【macOS】macOS上通过UTM安装并配置macOS虚拟机">【macOS】macOS上通过UTM安装并配置macOS虚拟机</a><time datetime="2025-04-13T02:50:00.000Z" title="Created 2025-04-13 10:50:00">2025-04-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/05/%E3%80%90%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%E3%80%91%E5%9C%A8macOS%E4%B8%8A%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%B6%E9%80%9A%E8%BF%87OpenWebUI%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE/" title="【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问">【保姆级教程】在 macOS 上本地部署大模型并通过 OpenWebUI 进行访问</a><time datetime="2025-04-05T05:53:15.000Z" title="Created 2025-04-05 13:53:15">2025-04-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/05/%E5%89%AA%E6%98%A0%E5%AD%97%E5%B9%95%E5%8A%9F%E8%83%BD%E6%94%B6%E8%B4%B9%EF%BC%9FSubtitle-Edit%E8%87%AA%E5%8A%A8%E8%AF%86%E5%88%AB%E8%A7%86%E9%A2%91%E5%AD%97%E5%B9%95%E5%8F%AF%E8%A7%A3%E5%90%9B%E6%84%81%EF%BC%81/" title="剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！">剪映字幕功能收费？Subtitle Edit自动识别视频字幕可解君愁！</a><time datetime="2025-03-05T14:13:04.000Z" title="Created 2025-03-05 22:13:04">2025-03-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/15/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82%E5%9F%BA%E4%BA%8EWindows%E6%90%AD%E5%BB%BAOllama-Docker-OpenWebUI-DeepSeek-R1%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%8E%AF%E5%A2%83/" title="一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境">一文看懂基于Windows搭建Ollama+Docker+OpenWebUI+DeepSeek-R1大模型环境</a><time datetime="2025-02-15T08:48:02.000Z" title="Created 2025-02-15 16:48:02">2025-02-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By zenv</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
